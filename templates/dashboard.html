@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  
+    <title>Flood Dashboard</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">🌊 Flood Monitoring System</span>
+    </div>
+</nav>
+<div class="card p-4 mb-4">
+
+    <h4>Add Flood Report</h4>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="btn btn-success">Submit</button>
+    </form>
+
+<div class=" card p-4 my-3  ">
+    <h3> All reports</h3>
+    <table class=" table table-stripped "> 
+        <thead>
+            <tr>
+            <th>Region</th>
+            <th>Water Level</th>
+            <th>Death Toll</th>
+            <th>Displaced people</th>
+            <th>Severity</th>
+            <th>Operations</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports%}
+            <tr>
+                <td> {{report.region}}</td>
+                <td> {{report.water_level}}</td>
+                <td> {{report.death_toll }}</td>
+                <td> {{report.displaced_people}}</td>
+                <td> {{ report.severity }}</td>
+                 <td>
+                <a href="{% url 'update' report.id %}" class="btn btn-warning">Update</a>
+                <a href="{% url 'delete' report.id %}"class="btn btn-dark " >Delete</a>
+            </td>
+
+            </tr>
+
+      
+           
+
+            {% endfor %}
+        </tbody>
+
+    </table>
+    
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
