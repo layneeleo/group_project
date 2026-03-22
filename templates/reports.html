@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📁 Reports</h2>
+
+<form method="GET" class="mb-3 d-flex">
+    <input type="text" name="q" class="form-control me-2" placeholder="Search region...">
+    <button class="btn btn-primary">Search</button>
+</form>
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Region</th>
+            <th>Water</th>
+            <th>Deaths</th>
+            <th>Displaced</th>
+            <th>Severity</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for report in reports %}
+        <tr>
+            <td>{{ report.region }}</td>
+            <td>{{ report.water_level }}</td>
+            <td>{{ report.death_toll }}</td>
+            <td>{{ report.displaced_people }}</td>
+            <td>{{ report.severity }}</td>
+            <td><a href="{% url 'update' report.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a href="{% url 'delete' report.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

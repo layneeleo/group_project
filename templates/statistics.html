@@ -1,0 +1,60 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📊 Statistics</h2>
+
+<div class="row mt-4">
+
+    <div class="col">
+        <div class="card p-3 text-center">
+            <h5>Total Reports</h5>
+            <h2>{{ total }}</h2>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card p-3 bg-danger text-white text-center">
+            <h5>High</h5>
+            <h2>{{ high }}</h2>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card p-3 bg-warning text-dark text-center">
+            <h5>Medium</h5>
+            <h2>{{ medium }}</h2>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card p-3 bg-success text-white text-center">
+            <h5>Low</h5>
+            <h2>{{ low }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="card p-4 mt-5">
+    <h4>📍 Top Affected Regions</h4>
+
+    <ul class="list-group mt-3">
+        {% for region in top_regions %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ region.region }}
+                <span class="badge bg-danger">{{ region.count }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No data available</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+
+</script>
+{% endblock %}
