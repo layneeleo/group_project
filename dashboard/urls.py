@@ -9,7 +9,8 @@ urlpatterns=[
     path('sign_up/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
-     path('statistics/', views.statistics, name='statistics'),
+    path('statistics/', views.statistics, name='statistics'),
+    path('donate/', views.stk_push, name='donate'),
    
 
 ]

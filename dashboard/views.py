@@ -216,5 +216,61 @@ def statistics(request):
         "top_regions": top_regions
         
     })
+import requests
+from requests.auth import HTTPBasicAuth
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+import base64
+
+# your credentials
+CONSUMER_KEY = "your_key"
+CONSUMER_SECRET = "your_secret"
+SHORTCODE = "174379"  # test shortcode
+PASSKEY = "your_passkey"
+
+def get_access_token():
+    url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    response = requests.get(url, auth=HTTPBasicAuth(CONSUMER_KEY, CONSUMER_SECRET))
+    return response.json()['access_token']
+
+
+@csrf_exempt
+def stk_push(request):
+    if request.method == "POST":
+        phone = request.POST.get("phone")
+        amount = request.POST.get("amount")
+
+        access_token = get_access_token()
+
+        from datetime import datetime
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S') 
+
+       
+        password = base64.b64encode((SHORTCODE + PASSKEY + timestamp).encode()).decode()
+
+        url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "BusinessShortCode": SHORTCODE,
+            "Password": password,
+            "Timestamp": timestamp,
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": amount,
+            "PartyA": phone,
+            "PartyB": SHORTCODE,
+            "PhoneNumber": phone,
+            "CallBackURL": "https://yourdomain.com/callback/",
+            "AccountReference": "Donation",
+            "TransactionDesc": "Support Donation"
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+        return JsonResponse(response.json())
 
     
